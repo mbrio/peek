@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Peek' target in the 'Peek' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
