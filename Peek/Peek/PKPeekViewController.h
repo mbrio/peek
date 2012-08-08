@@ -15,6 +15,7 @@ extern NSString *const PKPVC_MESSAGE_HIDE;
 extern NSString *const PKPVC_MESSAGE_REVEAL;
 
 extern NSString *const PKPVC_MESSAGE_PUSH_FRONT;
+extern NSString *const PKPVC_MESSAGE_PUSH_FRONT_ANIMATED;
 extern NSString *const PKPVC_MESSAGE_PUSH_BACK;
 
 typedef enum {
@@ -89,5 +90,6 @@ typedef void (^PKPeekViewControllerCompletionBlock)(BOOL finished);
 + (void)reveal;
 + (void)pushBackViewController:(UIViewController *)controller;
 + (void)pushFrontViewController:(UIViewController *)controller;
++ (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation;
 
 @end

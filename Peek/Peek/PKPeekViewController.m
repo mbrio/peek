@@ -14,6 +14,7 @@ NSString *const PKPVC_MESSAGE_HIDE = @"PKPVC_MESSAGE_HIDE";
 NSString *const PKPVC_MESSAGE_REVEAL = @"PKPVC_MESSAGE_REVEAL";
 
 NSString *const PKPVC_MESSAGE_PUSH_FRONT = @"PKPVC_MESSAGE_PUSH_FRONT";
+NSString *const PKPVC_MESSAGE_PUSH_FRONT_ANIMATED = @"PKPVC_MESSAGE_PUSH_FRONT_ANIMATED";
 NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 @interface PKPeekViewController () {
@@ -274,12 +275,30 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 - (void)pushFrontViewController:(UIViewController *)controller
 {
-    [self hideWithAnimation:self.useAnimations shouldRevealFirst:self.slideOffFrontViewBeforePush pushController:controller];
+    [self pushFrontViewController:controller useAnimation:NO];
+}
+
+- (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
+{
+    if (controller)
+    {
+        BOOL shouldUseAnimation = useAnimation && peekViewState != PKPeekViewControllerStateHide;
+        
+        if (shouldUseAnimation)
+        {
+            [self hideWithAnimation:self.useAnimations shouldRevealFirst:self.slideOffFrontViewBeforePush pushController:controller];
+        }
+        
+        else [self updateFrontViewController:controller];
+    }
 }
 
 - (void)pushBackViewController:(UIViewController *)controller
 {
-    [self updateBackViewController:controller];
+    if (controller)
+    {
+        [self updateBackViewController:controller];
+    }
 }
 
 
@@ -298,6 +317,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     [self addFrontView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushFrontMessage:) name:PKPVC_MESSAGE_PUSH_FRONT object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushFrontAnimatedMessage:) name:PKPVC_MESSAGE_PUSH_FRONT_ANIMATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushBackMessage:) name:PKPVC_MESSAGE_PUSH_BACK object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeekMessage) name:PKPVC_MESSAGE_PEEK object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleHideMessage) name:PKPVC_MESSAGE_HIDE object:nil];
@@ -309,6 +329,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     [super viewDidUnload];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_FRONT object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_FRONT_ANIMATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_BACK object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PEEK object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_HIDE object:nil];
@@ -322,9 +343,14 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 #pragma mark - Message Handlers
 
+- (void)handlePushFrontAnimatedMessage:(NSNotification *)message
+{
+    [self pushFrontViewController:message.object useAnimation:YES];
+}
+
 - (void)handlePushFrontMessage:(NSNotification *)message
 {
-    [self pushFrontViewController:message.object];
+    [self pushFrontViewController:message.object useAnimation:NO];
 }
 
 - (void)handlePushBackMessage:(NSNotification *)message
@@ -734,7 +760,15 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 + (void)pushFrontViewController:(UIViewController *)controller
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_PUSH_FRONT object:controller];
+    [PKPeekViewController pushFrontViewController:controller useAnimation:NO];
+}
+
++ (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
+{
+    NSString *message = PKPVC_MESSAGE_PUSH_FRONT;
+    if (useAnimation) message = PKPVC_MESSAGE_PUSH_FRONT_ANIMATED;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:message object:controller];
 }
 
 @end
