@@ -203,6 +203,28 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 #pragma mark Back View
 
+- (void)updateBackViewController:(UIViewController *)controller
+{
+    UIViewController *prev = self.backViewController;
+    
+    if (prev)
+    {
+        [self removeBackView];
+        [self removeBackViewController];
+    }
+    
+    self.backViewController = controller;
+    
+    [self addBackViewController];
+    [self setupBackView];
+    
+    if (prev) {
+        self.backViewController.view.frame = prev.view.frame;
+    }
+    
+    [self addBackView];
+}
+
 - (void)setupBackView
 {
     if (self.backViewController)
@@ -257,6 +279,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 - (void)pushBackViewController:(UIViewController *)controller
 {
+    [self updateBackViewController:controller];
 }
 
 
