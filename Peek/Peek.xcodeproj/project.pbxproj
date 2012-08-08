@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8C63667215D2DE5700413E1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C63667115D2DE5700413E1B /* Foundation.framework */; };
+		8CA2FBE915D314C600886B87 /* PKPeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C63668015D2DE8F00413E1B /* PKPeekViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CA2FBE915D314C600886B87 /* PKPeekViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +232,7 @@
 				8C63667E15D2DE5700413E1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
