@@ -14,9 +14,9 @@ extern NSString *const PKPVC_MESSAGE_PEEK;
 extern NSString *const PKPVC_MESSAGE_HIDE;
 extern NSString *const PKPVC_MESSAGE_REVEAL;
 
-extern NSString *const PKPVC_MESSAGE_PUSH_FRONT;
-extern NSString *const PKPVC_MESSAGE_PUSH_FRONT_ANIMATED;
-extern NSString *const PKPVC_MESSAGE_PUSH_BACK;
+extern NSString *const PKPVC_MESSAGE_PUSH_DETAIL;
+extern NSString *const PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED;
+extern NSString *const PKPVC_MESSAGE_PUSH_MASTER;
 
 typedef enum {
     PKPeekViewControllerStateHide,
@@ -57,26 +57,26 @@ typedef void (^PKPeekViewControllerCompletionBlock)(BOOL finished);
 
 @interface PKPeekViewController : UIViewController
 
-@property (readonly) BOOL useAnimations;
-@property (readonly) BOOL slideOffFrontViewBeforePush;
+@property (getter=useAnimations, readonly) BOOL useAnimations;
+@property (getter=slideOffDetailViewBeforePush, readonly) BOOL slideOffDetailViewBeforePush;
 
-@property (strong, nonatomic) NSString *backViewControllerIdentifier;
-@property (strong, nonatomic) NSString *frontViewControllerIdentifier;
+@property (strong, nonatomic) NSString *masterViewControllerIdentifier;
+@property (strong, nonatomic) NSString *detailViewControllerIdentifier;
 
-@property (strong, nonatomic) UIViewController *backViewController;
-@property (strong, nonatomic) UIViewController *frontViewController;
+@property (strong, nonatomic) UIViewController *masterViewController;
+@property (strong, nonatomic) UIViewController *detailViewController;
 
 @property (weak, nonatomic) id<PKPeekViewControllerDelegate> delegate;
 
-@property (getter = peekViewState, readonly)PKPeekViewControllerState peekViewState;
+@property (getter=peekViewState, readonly)PKPeekViewControllerState peekViewState;
 
-- (id)initWithBackController:(UIViewController *)backController
-          andFrontController:(UIViewController *)frontController;
+- (id)initWithMasterViewController:(UIViewController *)masterController
+          andDetailViewController:(UIViewController *)detailController;
 
-- (CGRect)backViewFrame;
-- (CGRect)frontViewFrame;
-- (CGRect)frontViewPeekingFrame;
-- (CGRect)frontViewHiddenFrame;
+- (CGRect)masterViewFrame;
+- (CGRect)detailViewFrame;
+- (CGRect)detailViewPeekFrame;
+- (CGRect)detailViewHideFrame;
 
 - (void)peek;
 - (void)peekWithAnimation:(BOOL)useAnimation;
@@ -88,8 +88,8 @@ typedef void (^PKPeekViewControllerCompletionBlock)(BOOL finished);
 + (void)peek;
 + (void)hide;
 + (void)reveal;
-+ (void)pushBackViewController:(UIViewController *)controller;
-+ (void)pushFrontViewController:(UIViewController *)controller;
-+ (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation;
++ (void)pushMasterViewController:(UIViewController *)controller;
++ (void)pushDetailViewController:(UIViewController *)controller;
++ (void)pushDetailViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation;
 
 @end

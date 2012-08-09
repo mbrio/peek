@@ -13,9 +13,9 @@ NSString *const PKPVC_MESSAGE_PEEK = @"PKPVC_MESSAGE_PEEK";
 NSString *const PKPVC_MESSAGE_HIDE = @"PKPVC_MESSAGE_HIDE";
 NSString *const PKPVC_MESSAGE_REVEAL = @"PKPVC_MESSAGE_REVEAL";
 
-NSString *const PKPVC_MESSAGE_PUSH_FRONT = @"PKPVC_MESSAGE_PUSH_FRONT";
-NSString *const PKPVC_MESSAGE_PUSH_FRONT_ANIMATED = @"PKPVC_MESSAGE_PUSH_FRONT_ANIMATED";
-NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
+NSString *const PKPVC_MESSAGE_PUSH_DETAIL = @"PKPVC_MESSAGE_PUSH_DETAIL";
+NSString *const PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED = @"PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED";
+NSString *const PKPVC_MESSAGE_PUSH_MASTER = @"PKPVC_MESSAGE_PUSH_MASTER";
 
 @interface PKPeekViewController () {
     @private
@@ -29,11 +29,11 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 #pragma mark - Properties
 
-@synthesize backViewControllerIdentifier;
-@synthesize frontViewControllerIdentifier;
+@synthesize masterViewControllerIdentifier;
+@synthesize detailViewControllerIdentifier;
 
-@synthesize backViewController;
-@synthesize frontViewController;
+@synthesize masterViewController;
+@synthesize detailViewController;
 
 @synthesize delegate;
 
@@ -42,7 +42,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     return YES;
 }
 
-- (BOOL)slideOffFrontViewBeforePush
+- (BOOL)slideOffDetailViewBeforePush
 {
     return YES;
 }
@@ -55,28 +55,28 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 #pragma mark - Frames
 
-- (CGRect)backViewFrame
+- (CGRect)masterViewFrame
 {
     CGRect f = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
     return f;
 }
 
-- (CGRect)frontViewFrame
+- (CGRect)detailViewFrame
 {
     CGRect f = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
     return f;
 }
 
-- (CGRect)frontViewPeekingFrame
+- (CGRect)detailViewPeekFrame
 {
     CGRect f = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
     
     return f;
 }
 
-- (CGRect)frontViewHiddenFrame
+- (CGRect)detailViewHideFrame
 {
     CGRect f = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
     
@@ -87,14 +87,14 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 #pragma mark - Initialization
 
-- (id)initWithBackController:(UIViewController *)backController
-          andFrontController:(UIViewController *)frontController
+- (id)initWithMasterViewController:(UIViewController *)masterController
+          andDetailViewController:(UIViewController *)detailController
 {
     self = [super init];
     
     if (self) {
-        self.backViewController = backController;
-        self.frontViewController = frontController;
+        self.masterViewController = masterController;
+        self.detailViewController = detailController;
     }
     
     return self;
@@ -109,176 +109,176 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 
 - (void)dealloc
 {
-    self.frontViewController = nil;
-    self.backViewController = nil;
+    self.detailViewController = nil;
+    self.masterViewController = nil;
     self.delegate = nil;
 }
 
 - (void)initializeControllers
 {
-    if (!self.backViewController && self.backViewControllerIdentifier)
+    if (!self.masterViewController && self.masterViewControllerIdentifier)
     {
-        UIViewController *v = [self.storyboard instantiateViewControllerWithIdentifier:self.backViewControllerIdentifier];
-        if (v) self.backViewController = v;
+        UIViewController *v = [self.storyboard instantiateViewControllerWithIdentifier:self.masterViewControllerIdentifier];
+        if (v) self.masterViewController = v;
     }
     
-    if (!self.frontViewController && self.frontViewControllerIdentifier)
+    if (!self.detailViewController && self.detailViewControllerIdentifier)
     {
-        UIViewController *v = [self.storyboard instantiateViewControllerWithIdentifier:self.frontViewControllerIdentifier];
-        if (v) self.frontViewController = v;
+        UIViewController *v = [self.storyboard instantiateViewControllerWithIdentifier:self.detailViewControllerIdentifier];
+        if (v) self.detailViewController = v;
     }
 }
 
 
 
-#pragma mark - Front View & Front Controller
+#pragma mark - Detail View & Detail Controller
 
-#pragma mark Front View
+#pragma mark Detail View
 
-- (void)updateFrontViewController:(UIViewController *)controller
+- (void)updateDetailViewController:(UIViewController *)controller
 {
-    UIViewController *prev = self.frontViewController;
+    UIViewController *prev = self.detailViewController;
     
     if (prev)
     {
-        [self removeFrontView];
-        [self removeFrontViewController];
+        [self removeDetailView];
+        [self removeDetailViewController];
     }
     
-    self.frontViewController = controller;
+    self.detailViewController = controller;
     
-    [self addFrontViewController];
-    [self setupFrontView];
+    [self addDetailViewController];
+    [self setupDetailView];
     
     if (prev) {
-        self.frontViewController.view.frame = prev.view.frame;
+        self.detailViewController.view.frame = prev.view.frame;
     }
     
-    [self addFrontView];
+    [self addDetailView];
 }
 
-- (void)setupFrontView
+- (void)setupDetailView
 {
-    if (self.frontViewController)
+    if (self.detailViewController)
     {        
-        self.frontViewController.view.frame = self.frontViewFrame;
-        self.frontViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.detailViewController.view.frame = self.detailViewFrame;
+        self.detailViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
 }
 
-- (void)addFrontView
+- (void)addDetailView
 {
-    if (self.frontViewController)
+    if (self.detailViewController)
     {
-        [self.view addSubview:self.frontViewController.view];
+        [self.view addSubview:self.detailViewController.view];
     }
 }
 
-- (void)removeFrontView
+- (void)removeDetailView
 {
-    if (self.frontViewController)
+    if (self.detailViewController)
     {
-        [self.frontViewController.view removeFromSuperview];
+        [self.detailViewController.view removeFromSuperview];
     }
 }
 
-#pragma mark Front View Controller
+#pragma mark Detail View Controller
 
-- (void)addFrontViewController
+- (void)addDetailViewController
 {
-    if (self.frontViewController)
+    if (self.detailViewController)
     {
-        [self addChildViewController:self.frontViewController];
-        [self.frontViewController didMoveToParentViewController:self];
+        [self addChildViewController:self.detailViewController];
+        [self.detailViewController didMoveToParentViewController:self];
     }
 }
 
-- (void)removeFrontViewController
+- (void)removeDetailViewController
 {
-    [self.frontViewController removeFromParentViewController];
+    [self.detailViewController removeFromParentViewController];
 }
 
 
 
-#pragma mark - Back View & Back Controller
+#pragma mark - Master View & Master Controller
 
-#pragma mark Back View
+#pragma mark Master View
 
-- (void)updateBackViewController:(UIViewController *)controller
+- (void)updateMasterViewController:(UIViewController *)controller
 {
-    UIViewController *prev = self.backViewController;
+    UIViewController *prev = self.masterViewController;
     
     if (prev)
     {
-        [self removeBackView];
-        [self removeBackViewController];
+        [self removeMasterView];
+        [self removeMasterViewController];
     }
     
-    self.backViewController = controller;
+    self.masterViewController = controller;
     
-    [self addBackViewController];
-    [self setupBackView];
+    [self addMasterViewController];
+    [self setupMasterView];
     
     if (prev) {
-        self.backViewController.view.frame = prev.view.frame;
+        self.masterViewController.view.frame = prev.view.frame;
     }
     
-    [self addBackView];
+    [self addMasterView];
 }
 
-- (void)setupBackView
+- (void)setupMasterView
 {
-    if (self.backViewController)
+    if (self.masterViewController)
     {
-        self.backViewController.view.frame = self.backViewFrame;
-        self.backViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.masterViewController.view.frame = self.masterViewFrame;
+        self.masterViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
 }
 
-- (void)addBackView
+- (void)addMasterView
 {
-    if (self.backViewController)
+    if (self.masterViewController)
     {
-        [self.view insertSubview:self.backViewController.view atIndex:0];
+        [self.view insertSubview:self.masterViewController.view atIndex:0];
     }
 }
 
-- (void)removeBackView
+- (void)removeMasterView
 {
-    if (self.backViewController)
+    if (self.masterViewController)
     {
-        [self.backViewController.view removeFromSuperview];
+        [self.masterViewController.view removeFromSuperview];
     }
 }
 
 
 
-#pragma mark Back View Controller
+#pragma mark Master View Controller
 
-- (void)addBackViewController
+- (void)addMasterViewController
 {
-    if (self.backViewController)
+    if (self.masterViewController)
     {
-        [self addChildViewController:self.backViewController];
-        [self.backViewController didMoveToParentViewController:self];
+        [self addChildViewController:self.masterViewController];
+        [self.masterViewController didMoveToParentViewController:self];
     }
 }
 
-- (void)removeBackViewController
+- (void)removeMasterViewController
 {
-    [self.backViewController removeFromParentViewController];
+    [self.masterViewController removeFromParentViewController];
 }
 
 
 
 #pragma mark - Push Navigation
 
-- (void)pushFrontViewController:(UIViewController *)controller
+- (void)pushDetailViewController:(UIViewController *)controller
 {
-    [self pushFrontViewController:controller useAnimation:NO];
+    [self pushDetailViewController:controller useAnimation:NO];
 }
 
-- (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
+- (void)pushDetailViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
 {
     if (controller)
     {
@@ -286,18 +286,18 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
         
         if (shouldUseAnimation)
         {
-            [self hideWithAnimation:self.useAnimations shouldRevealFirst:self.slideOffFrontViewBeforePush pushController:controller];
+            [self hideWithAnimation:self.useAnimations shouldRevealFirst:self.slideOffDetailViewBeforePush pushController:controller];
         }
         
-        else [self updateFrontViewController:controller];
+        else [self updateDetailViewController:controller];
     }
 }
 
-- (void)pushBackViewController:(UIViewController *)controller
+- (void)pushMasterViewController:(UIViewController *)controller
 {
     if (controller)
     {
-        [self updateBackViewController:controller];
+        [self updateMasterViewController:controller];
     }
 }
 
@@ -312,13 +312,13 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     peekViewState = PKPeekViewControllerStateHide;
     peekViewStateChanging = NO;
     
-    [self addFrontViewController];
-    [self setupFrontView];
-    [self addFrontView];
+    [self addDetailViewController];
+    [self setupDetailView];
+    [self addDetailView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushFrontMessage:) name:PKPVC_MESSAGE_PUSH_FRONT object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushFrontAnimatedMessage:) name:PKPVC_MESSAGE_PUSH_FRONT_ANIMATED object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushBackMessage:) name:PKPVC_MESSAGE_PUSH_BACK object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailMessage:) name:PKPVC_MESSAGE_PUSH_DETAIL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailAnimatedMessage:) name:PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushMasterMessage:) name:PKPVC_MESSAGE_PUSH_MASTER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeekMessage) name:PKPVC_MESSAGE_PEEK object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleHideMessage) name:PKPVC_MESSAGE_HIDE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRevealMessage) name:PKPVC_MESSAGE_REVEAL object:nil];;
@@ -328,34 +328,34 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 {
     [super viewDidUnload];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_FRONT object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_FRONT_ANIMATED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_BACK object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_DETAIL object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_MASTER object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PEEK object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_HIDE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_REVEAL object:nil];
     
-    [self removeBackViewController];
-    [self removeFrontViewController];
+    [self removeMasterViewController];
+    [self removeDetailViewController];
 }
 
 
 
 #pragma mark - Message Handlers
 
-- (void)handlePushFrontAnimatedMessage:(NSNotification *)message
+- (void)handlePushDetailAnimatedMessage:(NSNotification *)message
 {
-    [self pushFrontViewController:message.object useAnimation:YES];
+    [self pushDetailViewController:message.object useAnimation:YES];
 }
 
-- (void)handlePushFrontMessage:(NSNotification *)message
+- (void)handlePushDetailMessage:(NSNotification *)message
 {
-    [self pushFrontViewController:message.object useAnimation:NO];
+    [self pushDetailViewController:message.object useAnimation:NO];
 }
 
-- (void)handlePushBackMessage:(NSNotification *)message
+- (void)handlePushMasterMessage:(NSNotification *)message
 {
-    [self pushBackViewController:message.object];
+    [self pushMasterViewController:message.object];
 }
 
 - (void)handlePeekMessage
@@ -391,7 +391,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     BOOL hiding = state == PKPeekViewControllerStateHide || state == PKPeekViewControllerStateReveal;
     BOOL fullReveal = state == PKPeekViewControllerStateReveal || (prevState == PKPeekViewControllerStateReveal && state == PKPeekViewControllerStatePeek);
     
-    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"frontViewController", @"backViewController", nil];
+    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"detailViewController", @"masterViewController", nil];
     
     if (fullReveal == YES)
     {
@@ -446,7 +446,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     BOOL hiding = state == PKPeekViewControllerStateHide || state == PKPeekViewControllerStateReveal;
     BOOL fullReveal = state == PKPeekViewControllerStateReveal || (prevState == PKPeekViewControllerStateReveal && state == PKPeekViewControllerStatePeek);
     
-    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"frontViewController", @"backViewController", nil];
+    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"detailViewController", @"masterViewController", nil];
     
     if (fullReveal == YES)
     {
@@ -499,7 +499,7 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     BOOL hiding = state == PKPeekViewControllerStateHide || state == PKPeekViewControllerStateReveal;
     BOOL fullReveal = state == PKPeekViewControllerStateReveal || (prevState == PKPeekViewControllerStateReveal && state == PKPeekViewControllerStatePeek);
     
-    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"frontViewController", @"backViewController", nil];
+    NSArray *delegateNames = [NSArray arrayWithObjects:@"delegate", @"detailViewController", @"masterViewController", nil];
     
     if (fullReveal == YES)
     {
@@ -579,9 +579,9 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     
     [self slidViewWillChangeStateTo:state];
     
-    if (CGRectContainsPoint(self.view.frame, frame.origin) && !self.frontViewController.view.superview)
+    if (CGRectContainsPoint(self.view.frame, frame.origin) && !self.detailViewController.view.superview)
     {
-        [self addFrontView];
+        [self addDetailView];
     }
     
     if (setup) setup();
@@ -592,14 +592,14 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
         
         if (!CGRectContainsPoint(self.view.frame, frame.origin))
         {
-            [self removeFrontView];
+            [self removeDetailView];
         }
         
         [self slidViewDidChangeStateTo:state];
     };
     
     void (^uiUpdates)(void) = ^{
-        self.frontViewController.view.frame = frame;
+        self.detailViewController.view.frame = frame;
     };
     
     if (animated == YES)
@@ -642,12 +642,12 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 - (void)peekWithAnimation:(BOOL)useAnimation
 {
     [self transitionToState:PKPeekViewControllerStatePeek
-                  withFrame:[self frontViewPeekingFrame]
+                  withFrame:[self detailViewPeekFrame]
               withAnimation:useAnimation
                       setup: ^{
-                          [self addBackViewController];
-                          [self setupBackView];
-                          [self addBackView];
+                          [self addMasterViewController];
+                          [self setupMasterView];
+                          [self addMasterView];
                       }
                  completing:nil];
 }
@@ -667,22 +667,22 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     BOOL isRevealingFirst = peekViewState != PKPeekViewControllerStateReveal && shouldRevealFirst && useAnimation;
     
     void (^completion)(void) = ^{
-        [self removeBackView];
-        [self removeBackViewController];
+        [self removeMasterView];
+        [self removeMasterViewController];
     };
     
     if (isRevealingFirst)
     {
         [self transitionToState:PKPeekViewControllerStateHide
-                      withFrame:[self frontViewFrame]
+                      withFrame:[self detailViewFrame]
                   withAnimation:useAnimation
                      animations:^(PKPeekViewControllerAnimationBlock animationBlock, PKPeekViewControllerCompletionBlock completionBlock) {                         
                          void (^newAnimationBlock)(void) = ^{
-                             self.frontViewController.view.frame = [self frontViewHiddenFrame];
+                             self.detailViewController.view.frame = [self detailViewHideFrame];
                          };
                          
                          void (^newCompletionBlock)(BOOL finished) = ^(BOOL finished){
-                             if (controller) [self updateFrontViewController:controller];
+                             if (controller) [self updateDetailViewController:controller];
 
                              [UIView animateWithDuration:0.2
                                                    delay:0
@@ -703,10 +703,10 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     
     else
     {
-        if (controller) [self updateFrontViewController:controller];
+        if (controller) [self updateDetailViewController:controller];
         
         [self transitionToState:PKPeekViewControllerStateHide
-                      withFrame:[self frontViewFrame]
+                      withFrame:[self detailViewFrame]
                   withAnimation:useAnimation
                           setup:nil
                      completing:^{
@@ -723,14 +723,14 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
 - (void)revealWithAnimation:(BOOL)useAnimation
 {
     [self transitionToState:PKPeekViewControllerStateReveal
-                  withFrame:[self frontViewHiddenFrame]
+                  withFrame:[self detailViewHideFrame]
                withAnimation:useAnimation];
 }
 
 - (void)revealWithAnimation:(BOOL)useAnimation completing:(void (^)(void))completing
 {
     [self transitionToState:PKPeekViewControllerStateReveal
-                  withFrame:[self frontViewHiddenFrame]
+                  withFrame:[self detailViewHideFrame]
               withAnimation:useAnimation
                       setup:nil
                 completing:completing];
@@ -753,20 +753,20 @@ NSString *const PKPVC_MESSAGE_PUSH_BACK = @"PKPVC_MESSAGE_PUSH_BACK";
     [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_REVEAL object:nil];
 }
 
-+ (void)pushBackViewController:(UIViewController *)controller
++ (void)pushMasterViewController:(UIViewController *)controller
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_PUSH_BACK object:controller];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_PUSH_MASTER object:controller];
 }
 
-+ (void)pushFrontViewController:(UIViewController *)controller
++ (void)pushDetailViewController:(UIViewController *)controller
 {
-    [PKPeekViewController pushFrontViewController:controller useAnimation:NO];
+    [PKPeekViewController pushDetailViewController:controller useAnimation:NO];
 }
 
-+ (void)pushFrontViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
++ (void)pushDetailViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
 {
-    NSString *message = PKPVC_MESSAGE_PUSH_FRONT;
-    if (useAnimation) message = PKPVC_MESSAGE_PUSH_FRONT_ANIMATED;
+    NSString *message = PKPVC_MESSAGE_PUSH_DETAIL;
+    if (useAnimation) message = PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:message object:controller];
 }
