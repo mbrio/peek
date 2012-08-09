@@ -24,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C1CEB1415D348BF001DE3D3 /* Peek.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Peek.h; sourceTree = "<group>"; };
 		8C63666E15D2DE5700413E1B /* libPeek.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPeek.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C63667115D2DE5700413E1B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C63667515D2DE5700413E1B /* Peek-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peek-Prefix.pch"; sourceTree = "<group>"; };
@@ -74,6 +75,7 @@
 				8C63667F15D2DE8F00413E1B /* PKPeekViewController.h */,
 				8C63668015D2DE8F00413E1B /* PKPeekViewController.m */,
 				8C63667415D2DE5700413E1B /* Supporting Files */,
+				8C1CEB1415D348BF001DE3D3 /* Peek.h */,
 			);
 			path = Peek;
 			sourceTree = "<group>";
