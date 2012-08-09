@@ -7,29 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C51094115D456290061D814 /* Peek.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C1CEB1415D348BF001DE3D3 /* Peek.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C51094415D4567B0061D814 /* PKPeekViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C51094215D4567B0061D814 /* PKPeekViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C51094515D4567B0061D814 /* PKPeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C51094315D4567B0061D814 /* PKPeekViewController.m */; };
 		8C63667215D2DE5700413E1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C63667115D2DE5700413E1B /* Foundation.framework */; };
-		8CA2FBE915D314C600886B87 /* PKPeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C63668015D2DE8F00413E1B /* PKPeekViewController.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		8C63666C15D2DE5700413E1B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/${PRODUCT_NAME}";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8C1CEB1415D348BF001DE3D3 /* Peek.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Peek.h; sourceTree = "<group>"; };
+		8C51094215D4567B0061D814 /* PKPeekViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKPeekViewController.h; sourceTree = "<group>"; };
+		8C51094315D4567B0061D814 /* PKPeekViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKPeekViewController.m; sourceTree = "<group>"; };
 		8C63666E15D2DE5700413E1B /* libPeek.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPeek.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C63667115D2DE5700413E1B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C63667515D2DE5700413E1B /* Peek-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peek-Prefix.pch"; sourceTree = "<group>"; };
-		8C63667F15D2DE8F00413E1B /* PKPeekViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PKPeekViewController.h; sourceTree = "<group>"; };
-		8C63668015D2DE8F00413E1B /* PKPeekViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKPeekViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +62,8 @@
 		8C63667315D2DE5700413E1B /* Peek */ = {
 			isa = PBXGroup;
 			children = (
-				8C63667F15D2DE8F00413E1B /* PKPeekViewController.h */,
-				8C63668015D2DE8F00413E1B /* PKPeekViewController.m */,
+				8C51094215D4567B0061D814 /* PKPeekViewController.h */,
+				8C51094315D4567B0061D814 /* PKPeekViewController.m */,
 				8C63667415D2DE5700413E1B /* Supporting Files */,
 				8C1CEB1415D348BF001DE3D3 /* Peek.h */,
 			);
@@ -90,6 +80,18 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		8C51093E15D4560C0061D814 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C51094115D456290061D814 /* Peek.h in Headers */,
+				8C51094415D4567B0061D814 /* PKPeekViewController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		8C63666D15D2DE5700413E1B /* Peek */ = {
 			isa = PBXNativeTarget;
@@ -97,7 +99,7 @@
 			buildPhases = (
 				8C63666A15D2DE5700413E1B /* Sources */,
 				8C63666B15D2DE5700413E1B /* Frameworks */,
-				8C63666C15D2DE5700413E1B /* CopyFiles */,
+				8C51093E15D4560C0061D814 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -140,7 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CA2FBE915D314C600886B87 /* PKPeekViewController.m in Sources */,
+				8C51094515D4567B0061D814 /* PKPeekViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +201,7 @@
 				GCC_PREFIX_HEADER = "Peek/Peek-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include/Peek;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -211,6 +214,7 @@
 				GCC_PREFIX_HEADER = "Peek/Peek-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include/Peek;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
