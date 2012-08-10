@@ -9,13 +9,13 @@
 
 #import "PKPeekViewController.h"
 
-NSString *const PKPVC_MESSAGE_PEEK = @"PKPVC_MESSAGE_PEEK";
-NSString *const PKPVC_MESSAGE_HIDE = @"PKPVC_MESSAGE_HIDE";
-NSString *const PKPVC_MESSAGE_REVEAL = @"PKPVC_MESSAGE_REVEAL";
+NSString *const PKMessagePeek = @"PKMessagePeek";
+NSString *const PKMessageHide = @"PKMessageHide";
+NSString *const PKMessageReveal = @"PKMessageReveal";
 
-NSString *const PKPVC_MESSAGE_PUSH_DETAIL = @"PKPVC_MESSAGE_PUSH_DETAIL";
-NSString *const PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED = @"PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED";
-NSString *const PKPVC_MESSAGE_PUSH_MASTER = @"PKPVC_MESSAGE_PUSH_MASTER";
+NSString *const PKMessagePushDetail = @"PKMessagePushDetail";
+NSString *const PKMessagePushDetailAnimated = @"PKMessagePushDetailAnimated";
+NSString *const PKMessagePushMaster = @"PKMessagePushMaster";
 
 @interface PKPeekViewController () {
     @private
@@ -316,24 +316,24 @@ NSString *const PKPVC_MESSAGE_PUSH_MASTER = @"PKPVC_MESSAGE_PUSH_MASTER";
     [self setupDetailView];
     [self addDetailView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailMessage:) name:PKPVC_MESSAGE_PUSH_DETAIL object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailAnimatedMessage:) name:PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushMasterMessage:) name:PKPVC_MESSAGE_PUSH_MASTER object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeekMessage) name:PKPVC_MESSAGE_PEEK object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleHideMessage) name:PKPVC_MESSAGE_HIDE object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRevealMessage) name:PKPVC_MESSAGE_REVEAL object:nil];;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailMessage:) name:PKMessagePushDetail object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushDetailAnimatedMessage:) name:PKMessagePushDetailAnimated object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushMasterMessage:) name:PKMessagePushMaster object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeekMessage) name:PKMessagePeek object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleHideMessage) name:PKMessageHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRevealMessage) name:PKMessageReveal object:nil];;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_DETAIL object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PUSH_MASTER object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_PEEK object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_HIDE object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKPVC_MESSAGE_REVEAL object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessagePushDetail object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessagePushDetailAnimated object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessagePushMaster object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessagePeek object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessageHide object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PKMessageReveal object:nil];
     
     [self removeMasterViewController];
     [self removeDetailViewController];
@@ -740,22 +740,22 @@ NSString *const PKPVC_MESSAGE_PUSH_MASTER = @"PKPVC_MESSAGE_PUSH_MASTER";
 
 + (void)peek
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_PEEK object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PKMessagePeek object:nil];
 }
 
 + (void)hide
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_HIDE object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PKMessageHide object:nil];
 }
 
 + (void)reveal
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_REVEAL object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PKMessageReveal object:nil];
 }
 
 + (void)pushMasterViewController:(UIViewController *)controller
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:PKPVC_MESSAGE_PUSH_MASTER object:controller];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PKMessagePushMaster object:controller];
 }
 
 + (void)pushDetailViewController:(UIViewController *)controller
@@ -765,8 +765,8 @@ NSString *const PKPVC_MESSAGE_PUSH_MASTER = @"PKPVC_MESSAGE_PUSH_MASTER";
 
 + (void)pushDetailViewController:(UIViewController *)controller useAnimation:(BOOL)useAnimation
 {
-    NSString *message = PKPVC_MESSAGE_PUSH_DETAIL;
-    if (useAnimation) message = PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED;
+    NSString *message = PKMessagePushDetail;
+    if (useAnimation) message = PKMessagePushDetailAnimated;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:message object:controller];
 }

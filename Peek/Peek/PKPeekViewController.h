@@ -10,13 +10,13 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-extern NSString *const PKPVC_MESSAGE_PEEK;
-extern NSString *const PKPVC_MESSAGE_HIDE;
-extern NSString *const PKPVC_MESSAGE_REVEAL;
+extern NSString *const PKMessagePeek;
+extern NSString *const PKMessageHide;
+extern NSString *const PKMessageReveal;
 
-extern NSString *const PKPVC_MESSAGE_PUSH_DETAIL;
-extern NSString *const PKPVC_MESSAGE_PUSH_DETAIL_ANIMATED;
-extern NSString *const PKPVC_MESSAGE_PUSH_MASTER;
+extern NSString *const PKMessagePushDetail;
+extern NSString *const PKMessagePushDetailAnimated;
+extern NSString *const PKMessagePushMaster;
 
 typedef enum {
     PKPeekViewControllerStateHide,
